@@ -2,9 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	sender.setup("192.168.0.18", 12345);
-
-	//serial.setup("COM6", 115200);
     
     gui.setup("SETTINGS", "settings.xml", 0, 0	);
     
@@ -32,7 +29,16 @@ void ofApp::setup(){
     brightB.addListener(this, &ofApp::onBrightChanged);
     
     gui.loadFromFile("settings.xml");
-    	
+    
+
+    networkSettings.loadFile("network_settings.xml");
+    string ip = networkSettings.getValue("network:ip", "192.168.0.100");
+    int port  = networkSettings.getValue("network:port", 12345);
+    cout << "Send To: " << ip << "(" << port << ")" << endl;
+    sender.setup(ip, port);
+    
+    //serial.setup("COM6", 115200);
+
 
     float btnSize = ofGetHeight();
     

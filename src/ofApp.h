@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxOsc.h"
 #include "ofxGui.h"
+#include "ofxXmlSettings.h"
 
 
 class ofApp : public ofBaseApp{
@@ -185,5 +186,7 @@ private:
     OneAction lampOffAction;
     OneAction brightOnAction;
     OneAction brightOffAction;
+    
+    ofxXmlSettings networkSettings;
 };
 
