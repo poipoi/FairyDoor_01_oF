@@ -58,6 +58,24 @@ class ofApp : public ofBaseApp{
             sender.sendMessage(msg, false);
         }
     
+        void onBellDurChanged(float& val) {
+            bellAction.durTime = val;
+        }
+        
+        void onKnockDurChanged(float& val) {
+            knockAction.durTime = val;
+        }
+    
+        void onLampDurChanged(float& val) {
+            lampOnAction.durTime = val;
+            lampOffAction.durTime = val;
+        }
+        
+        void onBrightDurChanged(float& val) {
+            brightOnAction.durTime = val;
+            brightOffAction.durTime = val;
+        }
+        
 		void onBrightChanged(int& val) {
             if (!brightBtn.isON) return;
             setBright(brightR, brightG, brightB, 1.0);
@@ -73,12 +91,16 @@ private:
 	ofSerial serial;
 		
 	ofxPanel gui;
-	ofxIntSlider brightR;
-	ofxIntSlider brightG;
-	ofxIntSlider brightB;
+    ofxFloatSlider bellDurTime;
+    ofxFloatSlider knockDurTime;
+    ofxFloatSlider lampDurTime;
 	ofxIntSlider lampR;
 	ofxIntSlider lampG;
 	ofxIntSlider lampB;
+    ofxFloatSlider brightDurTime;
+    ofxIntSlider brightR;
+    ofxIntSlider brightG;
+    ofxIntSlider brightB;
     bool guiIsVisible = false;
     
     class OriginalButton {

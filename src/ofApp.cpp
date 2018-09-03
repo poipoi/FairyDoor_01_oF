@@ -1,20 +1,45 @@
 #include "ofApp.h"
 
-#define BUTTON_SIZE     (200)
-
 //--------------------------------------------------------------
 void ofApp::setup(){
 	sender.setup("192.168.0.18", 12345);
 
 	//serial.setup("COM6", 115200);
     
-    bellBtn.setup(BUTTON_SIZE * 0, 0, BUTTON_SIZE, BUTTON_SIZE, "bell_on.png", "bell_off.png");
-    knockBtn.setup(BUTTON_SIZE * 1, 0, BUTTON_SIZE, BUTTON_SIZE, "knock_on.png", "knock_off.png");
-    lampBtn.setup(BUTTON_SIZE * 2, 0, BUTTON_SIZE, BUTTON_SIZE, "lamp_on.png", "lamp_off.png");
-    brightBtn.setup(BUTTON_SIZE * 3, 0, BUTTON_SIZE, BUTTON_SIZE, "bright_on.png", "bright_off.png");
+    gui.setup();
+    
+    gui.add(bellDurTime.setup("BELL_DUR", 0.1, 0, 1.0));
+    bellDurTime.addListener(this, &ofApp::onBellDurChanged);
+    gui.add(knockDurTime.setup("KNOCK_DUR", 0.1, 0, 1.0));
+    knockDurTime.addListener(this, &ofApp::onKnockDurChanged);
+    
+    gui.add(lampDurTime.setup("LAMP_DUR", 0.5, 0, 5.0));
+    lampDurTime.addListener(this, &ofApp::onLampDurChanged);
+    gui.add(lampR.setup("LAMP_R", 0, 0, 255));
+    lampR.addListener(this, &ofApp::onLampChanged);
+    gui.add(lampG.setup("LAMP_G", 100, 0, 255));
+    lampG.addListener(this, &ofApp::onLampChanged);
+    gui.add(lampB.setup("LAMP_B", 0, 0, 255));
+    lampB.addListener(this, &ofApp::onLampChanged);
+
+    gui.add(brightDurTime.setup("BRIGHT_DUR", 0.5, 0, 5.0));
+    brightDurTime.addListener(this, &ofApp::onBrightDurChanged);
+    gui.add(brightR.setup("BRIGHT_R", 0, 0, 255));
+    brightR.addListener(this, &ofApp::onBrightChanged);
+    gui.add(brightG.setup("BRIGHT_G", 255, 0, 255));
+    brightG.addListener(this, &ofApp::onBrightChanged);
+    gui.add(brightB.setup("BRIGHT_B", 0, 0, 255));
+    brightB.addListener(this, &ofApp::onBrightChanged);
+
+    float btnSize = ofGetHeight();
+    
+    bellBtn.setup(btnSize * 0, 0, btnSize, btnSize, "bell_on.png", "bell_off.png");
+    knockBtn.setup(btnSize * 1, 0, btnSize, btnSize, "knock_on.png", "knock_off.png");
+    lampBtn.setup(btnSize * 2, 0, btnSize, btnSize, "lamp_on.png", "lamp_off.png");
+    brightBtn.setup(btnSize * 3, 0, btnSize, btnSize, "bright_on.png", "bright_off.png");
 
     
-    bellAction.durTime = 0.1;
+    bellAction.durTime = bellDurTime;
     bellAction.startFunc = [&]() {
         cout << "Bell ON" << endl;
         setBell(true);
@@ -25,7 +50,7 @@ void ofApp::setup(){
         bellBtn.turnOFF();
     };
     
-    knockAction.durTime = 0.1;
+    knockAction.durTime = knockDurTime;
     knockAction.startFunc = [&]() {
         cout << "Knock ON" << endl;
         setKnock(true);
@@ -36,45 +61,29 @@ void ofApp::setup(){
         knockBtn.turnOFF();
     };
     
-    lampOnAction.durTime = 1.0;
+    lampOnAction.durTime = lampDurTime;
     lampOnAction.durFunc = [&](float ratio) {
         cout << "Lamp ON:" << ratio << endl;
         setLamp(lampR, lampG, lampB, ratio);
     };
 
-    lampOffAction.durTime = 1.0;
+    lampOffAction.durTime = lampDurTime;
     lampOffAction.durFunc = [&](float ratio) {
         cout << "Lamp OFF:" << ratio << endl;
         setLamp(lampR, lampG, lampB, 1.0 - ratio);
     };
 
-    brightOnAction.durTime = 1.0;
+    brightOnAction.durTime = brightDurTime;
     brightOnAction.durFunc = [&](float ratio) {
         cout << "Bright ON:" << ratio << endl;
         setBright(brightR, brightG, brightB, ratio);
     };
     
-    brightOffAction.durTime = 1.0;
+    brightOffAction.durTime = brightDurTime;
     brightOffAction.durFunc = [&](float ratio) {
         cout << "Bright OFF:" << ratio << endl;
         setBright(brightR, brightG, brightB, 1.0 - ratio);
     };
-
-	gui.setup();
-    
-	gui.add(lampR.setup("LAMP_R", 0, 0, 255));
-	lampR.addListener(this, &ofApp::onLampChanged);
-	gui.add(lampG.setup("LAMP_G", 100, 0, 255));
-	lampG.addListener(this, &ofApp::onLampChanged);
-	gui.add(lampB.setup("LAMP_B", 0, 0, 255));
-	lampB.addListener(this, &ofApp::onLampChanged);
-
-    gui.add(brightR.setup("BRIGHT_R", 0, 0, 255));
-    brightR.addListener(this, &ofApp::onBrightChanged);
-    gui.add(brightG.setup("BRIGHT_G", 255, 0, 255));
-    brightG.addListener(this, &ofApp::onBrightChanged);
-    gui.add(brightB.setup("BRIGHT_B", 0, 0, 255));
-    brightB.addListener(this, &ofApp::onBrightChanged);
 }
 
 //--------------------------------------------------------------
