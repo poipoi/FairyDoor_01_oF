@@ -6,7 +6,7 @@ void ofApp::setup(){
 
 	//serial.setup("COM6", 115200);
     
-    gui.setup();
+    gui.setup("SETTINGS", "settings.xml", 0, 0	);
     
     gui.add(bellDurTime.setup("BELL_DUR", 0.1, 0, 1.0));
     bellDurTime.addListener(this, &ofApp::onBellDurChanged);
@@ -30,6 +30,9 @@ void ofApp::setup(){
     brightG.addListener(this, &ofApp::onBrightChanged);
     gui.add(brightB.setup("BRIGHT_B", 0, 0, 255));
     brightB.addListener(this, &ofApp::onBrightChanged);
+    
+    gui.loadFromFile("settings.xml");
+    	
 
     float btnSize = ofGetHeight();
     
